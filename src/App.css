@@ -1,0 +1,29 @@
+.ant-dropdown-menu-item-active{
+  background-color: #b5ede0;
+}
+
+.React-editor-container{
+  position: relative;
+}
+
+.React-editor-container__language-btn-box{
+   background-color: #629386;
+   padding: 4px 11px;
+   border-radius: 50px;
+   margin: auto;
+   position: absolute;
+   bottom: 20px;
+   right: 20px;
+   cursor: pointer;
+ }
+
+.React-editor-container__language-btn-box i {
+  color: #ffffff !important;
+  font-size: 16px !important;
+  margin-top: 7px ;
+}
+
+.ant-dropdown-menu{
+  max-height: 250px;
+  overflow-y: scroll;
+}

@@ -1,0 +1,58 @@
+.note-editor.note-frame{
+  position: inherit;
+  width: 100%;
+  border: 0;
+}
+
+
+
+.note-toolbar-wrapper{
+  height: 0 !important;
+}
+
+.note-resizebar{
+  display: none;
+}
+
+.btn-group{
+    border: solid 0.8px #eeeeee;
+    border-radius: 4px;
+}
+
+.btn-group .btn-group, .btn-group .btn{
+    border: none;
+}
+.btn-group .btn:focus, .btn-group .btn:hover{
+    box-shadow: none;
+}
+
+.note-editor .note-editable p{
+  margin-bottom: 0;
+}
+
+.note-statusbar{
+  display: none;
+}
+
+.dropdown-toggle::after{
+    content: "";
+    display: none;
+}
+
+.modal-header{
+  display: none !important;
+}
+
+.note-image-popover, .note-link-popover, .note-table-popover{
+  display: none !important;
+}
+.note-popover .popover-content .dropdown-menu, .panel-heading.note-toolbar .dropdown-menu{
+  max-height: 130px;
+  overflow-y: scroll;
+    width: max-content;
+}
+
+.note-popover .popover-content .dropdown-menu, .panel-heading.note-toolbar .dropdown-menu li a{
+  text-decoration: none;
+  color: #404040;
+}
