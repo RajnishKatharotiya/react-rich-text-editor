@@ -9,6 +9,8 @@
 - Multi language supports.
 - Customize image uploader.
 
+![React-rich-text-editor](editorImage.png)
+
 ####Installation:
 ### `npm i react-rich-text-editor`
 

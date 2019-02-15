@@ -26,6 +26,10 @@
     box-shadow: none;
 }
 
+.panel-heading{
+    background-color: #ffffff !important;
+}
+
 .note-editor .note-editable p{
   margin-bottom: 0;
 }
