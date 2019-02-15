@@ -5,7 +5,7 @@
   "main": "./build/index.js",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/RajnishKatharotiya/react-rich-text-editor"
   },
   "dependencies": {
     "@babel/cli": "^7.2.3",
