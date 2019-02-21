@@ -5,7 +5,7 @@ import axios from "axios";
 import qs from "qs";
 import MaterialIcon from "material-icons-react";
 import PropTypes from "prop-types";
-import { Menu, Dropdown } from "antd";
+import {Menu, Dropdown, Button} from "antd";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
 import "../node_modules/antd/dist/antd.css";
 
@@ -21,6 +21,82 @@ let ImageUploader = function (context) {
         }
     });
     return button.render();   // return button as jquery object
+};
+
+let LanguageDropdown = function (context) {
+
+    let ui = window.$.summernote.ui;
+    var list = document.getElementById('ContentDropDown');
+    let languages= [
+        {
+            label: "English",
+            value: "english"
+        },
+        {
+            label: "Hindi",
+            value: "hindi"
+        },
+        {
+            label: "Gujarati",
+            value: "gujarati"
+        },
+        {
+            label: "Tamil",
+            value: "tamil"
+        },
+        {
+            label: "Kannada",
+            value: "kannada"
+        },
+        {
+            label: "Panjabi",
+            value: "panjabi"
+        },
+        {
+            label: "Malayalam",
+            value: "malayalam"
+        },
+        {
+            label: "Bengali",
+            value: "bengali"
+        },
+        {
+            label: "Marathi",
+            value: "marathi"
+        },
+        {
+            label: "Oriya",
+            value: "oriya"
+        },
+        {
+            label: "Konkani(E)",
+            value: "konkani(e)"
+        },
+        {
+            label: "Konkani(H)",
+            value: "konkani(h)"
+        }
+        ];
+
+    var button = ui.buttonGroup([
+        ui.button({
+            className: 'dropdown-toggle',
+            contents: `<span class="fa fa-language"></span> ${window.lang ? window.lang : "English"} <span class="fa fa-caret-down"></span>`,
+            tooltip: "Parámetros disponibles",
+            data: {
+                toggle: 'dropdown'
+            }
+        }),
+        ui.dropdown({
+            className: 'drop-default summernote-list',
+            contents: `<ul> ${languages.map(e => `<li>${e.label}</li>`)} </ul>`,
+            callback: function (e) {
+                console.log(e)
+            }
+        })
+    ]);
+
+    return button.render();   // return button as jquery object
 }
 
 class App extends Component {
@@ -28,11 +104,20 @@ class App extends Component {
         super(props);
         this.state = {
             editorValue : "" ,
-            lang : "english"
+            lang : "english",
+            stageEditorValue: ""
         }
         this.handleEditorValueChange = this.handleEditorValueChange.bind(this);
         this.handleLangChange = this.handleLangChange.bind(this);
         this.handleImageInsert = this.handleImageInsert.bind(this);
+    }
+
+    componentDidMount(){
+        const element = document.getElementsByClassName("note-editable")[0];
+        const spaces = new Set([0]);
+        window.prevString = '';
+        window.currentString = '';
+        window.languages = this.props.languages;
     }
 
     componentDidUpdate(prevProps){
@@ -49,6 +134,15 @@ class App extends Component {
                 win.focus();
             }
         });
+        const HTML = window.$(window.$("#reactRichEditor").summernote("code"));
+        const text = HTML.text();
+        if(this.props.onCodeChange){
+            this.props.onCodeChange(editorValue);
+        }
+        if(this.props.onTextChange) {
+            this.props.onTextChange(text);
+        }
+
         this.setState({editorValue})
     }
 
@@ -64,7 +158,24 @@ class App extends Component {
 
     render() {
         const { lang, editorValue } = this.state;
-        const { imageModel, height, languages } = this.props;
+        const { imageModel, height, languages, showAll } = this.props;
+
+        const menu = <Menu
+            className="ContentDropDown"
+            id="ContentDropDown"
+            onClick={e => this.handleLangChange(e.key)}
+        >
+            {
+                languages ? languages.map(e => (
+                    <Menu.Item
+                        className={lang === e.value ? "ant-dropdown-menu-item-active" : ""}
+                        key={e.value}
+                    >
+                        {e.label}
+                    </Menu.Item>
+                )) : ""
+            }
+        </Menu>
 
         return (
             <div className="React-editor-container">
@@ -82,23 +193,23 @@ class App extends Component {
                         dialogsFade: true,
                         disableResizeEditor: true,
                         toolbar: [
-                            ["style", ["undo", "redo", "style"]],
+                            ["style", ["undo", "redo", showAll ? "style" : "", "fontsize"]],
                             ["font", ["bold", "underline", "clear"]],
-                            ["fontname", ["fontname"]],
-                            ["color", ["color"]],
+                            ["fontname", [showAll ? "fontname" : ""]],
+                            ["color", [ showAll ? "color" : ""]],
                             ["para", ["ul", "ol", "paragraph"]],
-                            ["table", ["table"]],
+                            ["table", [ showAll ? "table" : ""]],
                             ["float", ["floatLeft", "floatRight", "floatNone"]],
                             ["insert", ["link", imageModel ? 'customImage' : ""]],
-                            ["view", ["codeview"]]
+                            ["view", [showAll ? "codeview" : ""]]
                         ],
                         buttons: {
-                            customImage: ImageUploader
+                            customImage: ImageUploader,
+                            LanguageDropdown: LanguageDropdown
                         },
                         hint: {
                             match: /\b(\w{1,})$/,
                             search: function (inString, callback) {
-                                window.inString = inString;
                                 let lang =
                                     window && window.lang
                                         ? window.lang.toLowerCase()
@@ -107,12 +218,15 @@ class App extends Component {
                                     const query = qs.stringify({inString, lang});
                                     let queryUrl = `http://quill.magicauthor.ml/processWordJSON?${query}`;
                                     axios.get(queryUrl).then(res => {
+                                        let resData = res.data.twords &&
+                                        res.data.twords[0] &&
+                                        res.data.twords[0].options
+                                            ? res.data.twords[0].options
+                                            : [];
+                                        let data = [];
+                                        data.push(...resData);
                                         callback(
-                                            res.data.twords &&
-                                            res.data.twords[0] &&
-                                            res.data.twords[0].options
-                                                ? res.data.twords[0].options
-                                                : []
+                                            data
                                         );
                                     });
                                 } else {
@@ -123,21 +237,7 @@ class App extends Component {
                     }}
                     onChange={this.handleEditorValueChange}
                 />
-                <Dropdown overlay={ <Menu
-                    className="ContentDropDown"
-                    onClick={e => this.handleLangChange(e.key)}
-                >
-                    {
-                        languages ? languages.map(e => (
-                            <Menu.Item
-                                className={lang === e.value ? "ant-dropdown-menu-item-active" : ""}
-                                key={e.value}
-                            >
-                                {e.label}
-                            </Menu.Item>
-                        )) : ""
-                    }
-                </Menu>} placement="topLeft">
+                <Dropdown overlay={menu} placement="topLeft">
                     <div className="React-editor-container__language-btn-box">
                         <MaterialIcon icon="translate"/>
                     </div>
@@ -159,12 +259,16 @@ App.propTypes = {
     imageModel: PropTypes.element,
     insertImage: PropTypes.string,
     languages: PropTypes.array,
+    onTextChange: PropTypes.func,
+    onCodeChange: PropTypes.func,
+    showAll: PropTypes.bool,
 }
 
 App.defaultProps = {
     height: 500,
     imageModel: null,
     insertImage: "",
+    showAll: false,
     languages: [
         {
             label: "English",

@@ -64,3 +64,33 @@ languages={ [{
 ```
 ###### Type: Array
 ###### Default: All languages array
+
+##### `onTextChange` :
+get continuous plain text change of editor.
+```
+onTextChange={e =>
+ console.log(e);
+}
+```
+###### Type: Func
+
+##### `onCodeChange` :
+get continuous HTML text change of editor.
+```
+onCodeChange={e =>
+ console.log(e);
+}
+```
+###### Type: Func
+
+##### `showAll` :
+Will shows all toolbar functionality when its enabled.
+For an ePub usage pass "false",
+For a blog usage pass "true"
+```
+showAll={
+    true
+}
+```
+###### Type: Boolean
+###### Default: false

@@ -9,6 +9,7 @@ import "bootstrap/js/dist/dropdown";
 import "bootstrap/js/dist/tooltip";
 import "bootstrap/dist/css/bootstrap.css";
 import './ReactEditor.css'
+import CustomHintPopover from "./CustomHintPopover";
 
 class ReactEditor extends Component {
   constructor(props) {
@@ -52,6 +53,8 @@ class ReactEditor extends Component {
     // const codeviewCommand = codeview ? 'codeview.activate' : 'codeview.deactivate';
     options.callbacks = this.callbacks;
     this.editor = $(`#${this.uid}`);
+    $.extend(true, $.summernote.options.modules, {'hintPopover': CustomHintPopover});
+    console.log($.summernote);
     this.editor.summernote(options);
     if (codeview) {
       this.editor.summernote("codeview.activate");

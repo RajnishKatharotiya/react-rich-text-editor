@@ -9,12 +9,13 @@
 .React-editor-container__language-btn-box{
    background-color: #629386;
    padding: 4px 11px;
-   border-radius: 50px;
+   border-radius: 5px;
    margin: auto;
    position: absolute;
-   bottom: 20px;
-   right: 20px;
+   top: 5px;
+   left: 5px;
    cursor: pointer;
+    z-index: 3000;
  }
 
 .React-editor-container__language-btn-box i {
