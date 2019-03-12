@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactEditor from './ReactEditor';
-import './App.css';
+import '../public/App.css';
 import axios from "axios";
 import qs from "qs";
 import MaterialIcon from "material-icons-react";
@@ -215,6 +215,8 @@ class App extends Component {
                                         ? window.lang.toLowerCase()
                                         : "english";
                                 if (lang && lang !== "english") {
+                                    console.log("from app", inString);
+                                    window.inString = inString;
                                     const query = qs.stringify({inString, lang});
                                     let queryUrl = `http://quill.magicauthor.ml/processWordJSON?${query}`;
                                     axios.get(queryUrl).then(res => {
@@ -224,7 +226,7 @@ class App extends Component {
                                             ? res.data.twords[0].options
                                             : [];
                                         let data = [];
-                                        data.push(...resData);
+                                        data.push(...resData, inString);
                                         callback(
                                             data
                                         );

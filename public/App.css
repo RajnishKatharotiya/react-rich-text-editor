@@ -7,14 +7,14 @@
 }
 
 .React-editor-container__language-btn-box{
-   background-color: #629386;
-   padding: 4px 11px;
-   border-radius: 5px;
-   margin: auto;
-   position: absolute;
-   top: 5px;
-   left: 5px;
-   cursor: pointer;
+    background-color: #629386;
+    padding: 0 8px;
+    border-radius: 5px;
+    margin: auto;
+    position: fixed;
+    top: 5px;
+    left: 6px;
+    cursor: pointer;
     z-index: 3000;
  }
 

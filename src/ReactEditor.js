@@ -8,7 +8,7 @@ import "bootstrap/js/dist/modal";
 import "bootstrap/js/dist/dropdown";
 import "bootstrap/js/dist/tooltip";
 import "bootstrap/dist/css/bootstrap.css";
-import './ReactEditor.css'
+import '../public/ReactEditor.css'
 import CustomHintPopover from "./CustomHintPopover";
 
 class ReactEditor extends Component {

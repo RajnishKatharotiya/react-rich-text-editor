@@ -60,3 +60,7 @@
   text-decoration: none;
   color: #404040;
 }
+
+.panel-heading.note-toolbar {
+    padding: 0 0 5px 42px;
+}
